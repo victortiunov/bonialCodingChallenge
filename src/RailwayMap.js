@@ -109,7 +109,6 @@ export const RailwayMap = () => {
                 commonStations[fromKey].staysHere = nonPriority;
             }
         }
-        console.log(commonStations);
     };
 
     return (
