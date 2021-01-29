@@ -12,6 +12,7 @@ const lines = [
             {x: 800, y: 250},
             {x: 950, y: 250},
         ],
+        passengers: 37,
     },
     {
         id: 2,
@@ -25,6 +26,7 @@ const lines = [
             {x: 650, y: 450},
             {x: 850, y: 450},
         ],
+        passengers: 50,
     },
     {
         id: 3,
@@ -38,19 +40,20 @@ const lines = [
             {x: 350, y: 500},
             {x: 350, y: 600},
         ],
+        passengers: 150,
     },
 ];
 
-const getStationKey = (x, y) => `${x}-${y}`;
+const getStationKey = ({x, y}) => `${x}-${y}`;
 
 const getCommonStations = () => {
-    const commonStations = [{x: 350, y: 300}];
+    const commonStations = {};
     const allStations = new Set();
     lines.forEach(line => {
         line.stations.forEach(station => {
-            const key = getStationKey(station.x, station.y);
+            const key = getStationKey(station);
             if (allStations.has(key)) {
-                commonStations.push(station);
+                commonStations[key] = station;
             }
             allStations.add(key);
         });
