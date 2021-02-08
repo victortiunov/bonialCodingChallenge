@@ -12,7 +12,7 @@ const lines = [
             {x: 800, y: 250},
             {x: 950, y: 250},
         ],
-        passengers: 37,
+        passengers: Math.round(Math.random() * 100),
     },
     {
         id: 2,
@@ -26,7 +26,7 @@ const lines = [
             {x: 650, y: 450},
             {x: 850, y: 450},
         ],
-        passengers: 50,
+        passengers: Math.round(Math.random() * 100),
     },
     {
         id: 3,
@@ -40,7 +40,7 @@ const lines = [
             {x: 350, y: 500},
             {x: 350, y: 600},
         ],
-        passengers: 150,
+        passengers: Math.round(Math.random() * 100),
     },
 ];
 

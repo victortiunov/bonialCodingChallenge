@@ -4,8 +4,13 @@ import {RailwayLine} from './RailwayLine';
 import {CommonStations} from './CommonStations';
 import {Trains} from './Trains';
 import {lines, commonStations, getStationKey} from './data';
+import {TrainsConfig} from './TrainsConfig';
 
 const RailwayContext = React.createContext([]);
+const TrainsConfigContext = React.createContext({
+    trains: [],
+    setPassengers: () => {},
+});
 
 export const RailwayMap = () => {
     const [trains, setTrains] = useState(lines.map(line => ({
@@ -18,6 +23,8 @@ export const RailwayMap = () => {
             stop: false,
         },
     })));
+    const width = 1000;
+    const height = 700;
     const duration = 1000;
     const timeout = 15;
     const ticks = duration / timeout;
@@ -111,17 +118,43 @@ export const RailwayMap = () => {
         }
     };
 
+    const trainsConfig = {
+        trains: trains.map(train => ({
+            lineId: train.lineId,
+            lineName: lines.find(line => line.id === train.lineId).title,
+            passengers: train.passengers,
+        })),
+        setPassengers: (lineId, passengers) => {
+            setTrains(trains.map(train => {
+                if (train.lineId === lineId) {
+                    return {
+                        ...train,
+                        passengers,
+                    };
+                }
+                return train;
+            }));
+        },
+    };
+
     return (
-        <Stage width={window.innerWidth} height={window.innerHeight}>
-            {lines.map(line => (
-                <RailwayLine key={`railway-line-${line.id}`} {...line}/>
-            ))}
-            <CommonStations commonStations={commonStations}/>
-            <RailwayContext.Provider value={trains}>
-                <Trains />
-            </RailwayContext.Provider>
-        </Stage>
+        <React.Fragment>
+            <div className='railway-map' style={{width: `${width}px`, height: `${height}px`}}>
+                <Stage width={width} height={height}>
+                    {lines.map(line => (
+                        <RailwayLine key={`railway-line-${line.id}`} {...line}/>
+                    ))}
+                    <CommonStations commonStations={commonStations}/>
+                    <RailwayContext.Provider value={trains}>
+                        <Trains />
+                    </RailwayContext.Provider>
+                </Stage>
+            </div>
+            <TrainsConfigContext.Provider value={trainsConfig}>
+                <TrainsConfig />
+            </TrainsConfigContext.Provider>
+        </React.Fragment>
     );
 };
 
-export {RailwayContext};
+export {RailwayContext, TrainsConfigContext};
